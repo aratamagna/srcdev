@@ -65,10 +65,7 @@ router.get('/user/:codigo', function (req, res, next) {
 router.get('/profile',middleware.ensureAuthenticated, function (req, res, next) {
 });
 
-app.post('/upload', multer(multerConfig).single('input'),function(req, res){
-      //Here is where I could add functions to then get the url of the new photo
-      //And relocate that to a cloud storage solution with a callback containing its new url
-      //then ideally loading that into your database solution.   Use case - user uploading an avatar...
+router.post('/upload', multer(multerConfig).single('input'),function(req, res){
       res.send('Complete! Check out your public/photo-storage folder.  Please note that files not encoded with an image mimetype are rejected. <a href="index.html">try again</a>');
 });
 
