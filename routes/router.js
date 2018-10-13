@@ -112,14 +112,12 @@ router.get('/profile',middleware.ensureAuthenticated, function (req, res, next) 
 });
 
 router.post('/upload', multer(multerConfig).single('input'),function(req, res){
-  console.log(req.file.filename)
   request.post(url, {
     formData: {
     photo:fs.createReadStream('./public/storage/'+req.file.filename)
   },
   json: true
 }, function (err, resp, body) {
-  console.log(err)
   res.send(body);
 });
 });
