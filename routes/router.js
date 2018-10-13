@@ -2,8 +2,13 @@ var express = require('express');
 var router = express.Router();
 var middleware = require('../middleware/middleware');
 const multer = require('multer');
+var request = require('request');
+var fs = require('fs');
 var auth = require('../Controllers/auth');
 var user = require('../Controllers/user');
+var config = require('../config');
+
+var url = config.SERVICE_CONN_STRING;
 
 //MULTER CONFIG: to get file photos to temp server storage
 const multerConfig = {
@@ -13,7 +18,7 @@ const multerConfig = {
 
     //specify destination
     destination: function(req, file, next){
-      next(null, './public/photo-storage');
+      next(null, './public/storage');
     },
 
     //specify the filename to be unique
@@ -107,7 +112,15 @@ router.get('/profile',middleware.ensureAuthenticated, function (req, res, next) 
 });
 
 router.post('/upload', multer(multerConfig).single('input'),function(req, res){
-      res.send('Complete! Check out your public/photo-storage folder.  Please note that files not encoded with an image mimetype are rejected. <a href="index.html">try again</a>');
+  console.log(req.file.filename)
+  request.post(url, {
+    formData: {
+    photo:fs.createReadStream('./public/storage'+req.file.filename)
+  },
+  json: true
+}, function (err, resp, body) {
+  res.send(body);
+});
 });
 
 // GET for logout logout
