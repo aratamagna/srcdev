@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-const multer = require('multer');
 
 //connect to MongoDB
 mongoose.connect('mongodb://tatsuya:miyuki@18.222.67.253/gohan');

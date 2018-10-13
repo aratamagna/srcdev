@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var middleware = require('../middleware/middleware');
+const multer = require('multer');
 var auth = require('../Controllers/auth');
 var user = require('../Controllers/user');
 
