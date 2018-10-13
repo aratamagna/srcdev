@@ -70,7 +70,7 @@ app.post('/upload', multer(multerConfig).single('input'),function(req, res){
       //And relocate that to a cloud storage solution with a callback containing its new url
       //then ideally loading that into your database solution.   Use case - user uploading an avatar...
       res.send('Complete! Check out your public/photo-storage folder.  Please note that files not encoded with an image mimetype are rejected. <a href="index.html">try again</a>');
-}
+});
 
 // GET for logout logout
 router.get('/logout', function (req, res, next) {
