@@ -27,7 +27,7 @@ const multerConfig = {
       //get the file mimetype ie 'image/jpeg' split and prefer the second value ie'jpeg'
       const ext = file.mimetype.split('/')[1];
       //set the file fieldname to a unique name containing the original name, current datetime and the extension.
-      next(null, file.originalname: + '.'+ext);
+      next(null, file.originalname+ '.'+ext);
     }
   }),
 
