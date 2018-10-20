@@ -91,7 +91,7 @@ router.post('/upload', multer(multerConfig).single('input'),function(req, res){
   },
   json: true
 }, function (err, resp, body) {
-  console.log(resp)
+  console.log(resp.tags)
   res.send(body);
 });
 });
