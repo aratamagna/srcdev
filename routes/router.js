@@ -56,9 +56,10 @@ router.get('/', function (req, res, next) {
 
 router.post('/login', auth.emailLogin);
 
-router.get('/user',middleware.ensureAuthenticated, user.listUsers);
+router.get('/user',middleware.ensureAuthenticated, function (req, res, next) {
+  user.getUser(req, res, next);
+});
 
-//POST route for updating data
 router.post('/user',middleware.ensureAuthenticated, function (req, res, next) {
   if (req.body.password !== req.body.passwordConf) {
     var err = new Error('Error de contraseña.');
@@ -68,7 +69,6 @@ router.post('/user',middleware.ensureAuthenticated, function (req, res, next) {
   }
 
   if (req.body.email &&
-    req.body.username &&
     req.body.password &&
     req.body.passwordConf) {
 
@@ -81,37 +81,11 @@ router.post('/user',middleware.ensureAuthenticated, function (req, res, next) {
     }
 });
 
-router.put('/user', function (req, res, next) {
-  if (req.body.password !== req.body.passwordConf) {
-    var err = new Error('Error de contraseña.');
-    err.status = 400;
-    res.send("contraseñas no coinciden");
-    return next(err);
-  }
-
-  if (req.body.email &&
-    req.body.username &&
-    req.body.password &&
-    req.body.passwordConf) {
-
-      user.updateUser(req, res, next);
-
-    } else {
-      var err = new Error('Todos los campos son requeridos.');
-      err.status = 400;
-      return next(err);
-    }
-});
-
-router.delete('/user', function (req, res) {});
-
-router.get('/user/:codigo', function (req, res, next) {
-});
-
 router.get('/profile',middleware.ensureAuthenticated, function (req, res, next) {
 });
 
 router.post('/upload', multer(multerConfig).single('input'),function(req, res){
+  console.log(req.file.filename)
   request.post(url, {
     formData: {
     photo:fs.createReadStream('./public/storage/'+req.file.filename)

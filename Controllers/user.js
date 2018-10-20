@@ -5,7 +5,7 @@ exports.insertUser = function(req, res, next) {
 
   var userData = {
     email: req.body.email,
-    username: req.body.username,
+    username: req.body.email,
     password: req.body.password,
     passwordConf: req.body.passwordConf,
   }
@@ -36,5 +36,11 @@ exports.updateUser = function(req, res, next) {
 exports.listUsers = function(req, res, next) {
   User.find(function (err, doc) {
     res.send(doc);
+  });
+}
+
+exports.getUser = function(req, res, next) {
+  User.findById(req.user, function(err, obj){
+    res.send(obj);
   });
 }
