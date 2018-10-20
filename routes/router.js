@@ -33,20 +33,34 @@ const multerConfig = {
 
   // filter out and prevent non-image files.
   fileFilter: function(req, file, next){
+    var isfile = false;
+    var isbody = false;
         if(!file){
-          next();
+          if (!req.body){
+            next();
+          } else {
+            isbody = true;
+          }
+        } else {
+          isfile = true;
         }
 
-      // only permit image mimetypes
-      const image = file.mimetype.startsWith('image/');
-      if(image){
-        console.log('photo uploaded');
-        next(null, true);
-      }else{
-        console.log("file not supported")
-        //TODO:  A better message response to user on failure.
-        return next();
-      }
+        if (isfile){
+          // only permit image mimetypes
+          const image = file.mimetype.startsWith('image/');
+          if(image){
+            console.log('photo uploaded');
+            next(null, true);
+          }else{
+            console.log("file not supported")
+            //TODO:  A better message response to user on failure.
+            return next();
+          }
+        } else {
+          if (isbody){
+            return next();
+          }
+        }
   }
 };
 
