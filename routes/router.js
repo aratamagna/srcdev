@@ -24,48 +24,29 @@ const multerConfig = {
     //specify the filename to be unique
     filename: function(req, file, next){
       console.log(file);
-
-      if (!file){
-        next(null, Date.now()+ '.jpeg');
-      } else {
-        //get the file mimetype ie 'image/jpeg' split and prefer the second value ie'jpeg'
-        const ext = file.mimetype.split('/')[1];
-        //set the file fieldname to a unique name containing the original name, current datetime and the extension.
-        next(null, file.originalname+ '.'+ext);
-      }
+      //get the file mimetype ie 'image/jpeg' split and prefer the second value ie'jpeg'
+      const ext = file.mimetype.split('/')[1];
+      //set the file fieldname to a unique name containing the original name, current datetime and the extension.
+      next(null, file.originalname+ '.'+ext);
     }
   }),
 
   // filter out and prevent non-image files.
   fileFilter: function(req, file, next){
-    var isfile = false;
-    var isbody = false;
         if(!file){
-          if (!req.body){
-            next();
-          } else {
-            isbody = true;
-          }
-        } else {
-          isfile = true;
+          next();
         }
 
-        if (isfile){
-          // only permit image mimetypes
-          const image = file.mimetype.startsWith('image/');
-          if(image){
-            console.log('photo uploaded');
-            next(null, true);
-          }else{
-            console.log("file not supported")
-            //TODO:  A better message response to user on failure.
-            return next();
-          }
-        } else {
-          if (isbody){
-            return next();
-          }
-        }
+      // only permit image mimetypes
+      const image = file.mimetype.startsWith('image/');
+      if(image){
+        console.log('photo uploaded');
+        next(null, true);
+      }else{
+        console.log("file not supported")
+        //TODO:  A better message response to user on failure.
+        return next();
+      }
   }
 };
 
@@ -104,7 +85,6 @@ router.get('/profile',middleware.ensureAuthenticated, function (req, res, next) 
 });
 
 router.post('/upload', multer(multerConfig).single('input'),function(req, res){
-  console.log(req)
   request.post(url, {
     formData: {
     photo:fs.createReadStream('./public/storage/'+req.file.filename)
