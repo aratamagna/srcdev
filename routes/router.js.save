@@ -87,27 +87,27 @@ router.get('/profile',middleware.ensureAuthenticated, function (req, res, next) 
 
 router.post('/upload', multer(multerConfig).single('input'),function(req, res){
 
+console.log(url)
+console.log(key)
+https://eastus.api.cognitive.microsoft.com/vision/v1.0/recognizeText?handwriting=true",
+  SERVICE_KEY: "3f81c6e4bbff40e3ae523ad43f31910f"
 var opt = {
-	url: url,
+	url: 'https://eastus.api.cognitive.microsoft.com/vision/v1.0/recognizeText?handwriting=true',
 	method: 'POST',
 	headers: {
+		'Content-Type': 'application/json',
 		'Ocp-Apim-Subscription-Key': key
-	},
-	encoding: null,
+	}
 };
 
-fs.readFile('./public/storage/'+req.file.filename, (err, buffer) => {
-        if (err) throw err;
-
-console.log(`${buffer}: ${buffer.length} characters, ` +
-    `${Buffer.byteLength(buffer, 'utf8')} bytes`);
-        opt.body = ${buffer};
-console.log(opt)
-
-	request(opt, function (err, resp, body) {
-        console.log(err)
-        res.send(body);
-	});
+  request(opt, {
+    formData: {
+    photo:fs.createReadStream('./public/storage/'+req.file.filename)
+  },
+  json: true
+}, function (err, resp, body) {
+console.log(err)
+  res.send(body);
 });
 });
 
